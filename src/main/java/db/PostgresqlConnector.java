@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class PostgresqlConnector
 {
+    private static final String driver = "org.postgresql.Driver";
     private static final String url = "jdbc:postgresql://localhost/to_dos";
     private static final String user = "to_do_user";
     private static final String password = "to_do_user";
@@ -19,9 +20,13 @@ public class PostgresqlConnector
     public static Connection getConnection() {
         if (connection == null)
             try {
+                Class.forName(driver);
                 connection = DriverManager.getConnection(url, user, password);
                 System.out.println("Connected to the PostgreSQL server successfully.");
             } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            } catch (ClassNotFoundException e) {
+                System.out.println("Driver is missing: " + driver);
                 System.out.println(e.getMessage());
             }
 
