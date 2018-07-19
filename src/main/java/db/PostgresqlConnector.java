@@ -8,8 +8,8 @@ public class PostgresqlConnector
 {
     private static final String driver = "org.postgresql.Driver";
     private static final String url = "jdbc:postgresql://localhost/to_dos";
-    private static final String user = "to_do_user";
-    private static final String password = "to_do_user";
+    private static final String user = "to_dos_admin";
+    private static final String password = "todosadmin";
 
     private static Connection connection = null;
 
