@@ -32,12 +32,23 @@ public class ToDoItemGateway {
     }
 
     public List<ToDoItem> findAllToDoItemsByDay (LocalDate day) {
+        String sql = "select to_do_id, description, notes, created_dt, updated_dt, alarm_dt, is_done from to_do_item where date_trunc('day', created_dt) = ?";
         List<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
-        String sql = "select id, description, notes, created_dt, updated_dt, alarm_dt, is_done from to_do_item where date_trunc('day', created_dt) = ?";
+        ResultSet result;
 
         try {
             PreparedStatement statement = PostgresqlConnector.getConnection().prepareStatement(sql);
-            statement.setString(1, day.atStartOfDay().toString());
+            statement.setObject(1, day);
+
+            result = statement.executeQuery();
+            statement.close();
+
+            while(result.next()) {
+                ToDoItem toDoItem = new ToDoItem();
+                toDoItem.setId(result.getInt("to_do_id"));
+                toDoItem.setId(result.getInt("to_do_id"));
+            }
+
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
