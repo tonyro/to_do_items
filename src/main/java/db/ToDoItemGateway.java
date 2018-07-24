@@ -4,8 +4,8 @@ import model.ToDoItem;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ToDoItemGateway {
@@ -53,16 +53,16 @@ public class ToDoItemGateway {
         return toDoItems;
     }
 
-    public void insert(String description, String notes, Date alarmDate) {
+    public void insert(String description, String notes, LocalDateTime alarmDate) {
         String sql = "insert into to_do_item(description, notes, created_dt, updated_dt, alarm_dt, is_done) values(?, ?, ?, ?, ?, ?);";
 
         try {
             PreparedStatement statement = PostgresqlConnector.getConnection().prepareStatement(sql);
             statement.setString(1, description);
             statement.setString(2, notes);
-            statement.setTimestamp(3, new Timestamp(new Date().getTime()));
-            statement.setTimestamp(4, new Timestamp(new Date().getTime()));
-            statement.setTimestamp(5, new Timestamp(alarmDate.getTime()));
+            statement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            statement.setTimestamp(5, Timestamp.valueOf(alarmDate));
             statement.setBoolean(6, Boolean.FALSE);
 
             statement.executeUpdate();
