@@ -73,4 +73,10 @@ public class ToDoItem {
     public void setDone(Boolean done) {
         isDone = done;
     }
+
+
+    public Boolean isValid() {
+
+        return !((id == null) && ((description == null) || description.isEmpty()));
+    }
 }

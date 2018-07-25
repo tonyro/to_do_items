@@ -33,7 +33,7 @@ public class ToDoItemGateway {
 
     public List<ToDoItem> findAllToDoItemsByDay (LocalDate day) {
         String sql = "select to_do_id, description, notes, created_dt, updated_dt, alarm_dt, is_done from to_do_item where date_trunc('day', created_dt) = ?";
-        List<ToDoItem> toDoItems = new ArrayList<ToDoItem>();
+        List<ToDoItem> toDoItems = new ArrayList<>();
         ResultSet result;
 
         try {
@@ -41,13 +41,25 @@ public class ToDoItemGateway {
             statement.setObject(1, day);
 
             result = statement.executeQuery();
-            statement.close();
 
             while(result.next()) {
                 ToDoItem toDoItem = new ToDoItem();
                 toDoItem.setId(result.getInt("to_do_id"));
-                toDoItem.setId(result.getInt("to_do_id"));
+                toDoItem.setDescription(result.getString("description"));
+                toDoItem.setNotes(result.getString("notes"));
+                toDoItem.setCreatedDate(result.getDate("created_dt"));
+                toDoItem.setUpdatedDate(result.getDate("updated_dt"));
+                toDoItem.setAlarmDate(result.getDate("alarm_dt"));
+                toDoItem.setDone(result.getBoolean("is_done"));
+
+                if (toDoItem.isValid()) {
+                    toDoItems.add(toDoItem);
+                } else {
+                    System.err.println("to_do_item was no valid");
+                }
             }
+
+            statement.close();
 
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
